@@ -1,9 +1,10 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { env } from '@src/env';
+import { env } from './env';
 
 import { UsersModule } from './users/users.module';
 import { User } from './users/models/user.entity';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { User } from './users/models/user.entity';
       entities: [User],
       logging: env.TYPEORM_LOGGING,
     }),
+    AuthModule,
     UsersModule,
   ],
   controllers: [],

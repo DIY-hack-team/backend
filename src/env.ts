@@ -9,6 +9,10 @@ class EnvParams {
   TYPEORM_SYNCHRONIZE: boolean;
   TYPEORM_LOGGING: boolean;
   SERVER_PORT: number;
+  JWT_SECRET: string;
+  JWT_EXPIRES_IN: string;
+  ADMIN_NAME: string;
+  ADMIN_PASSWORD: string;
 }
 
 export const env = (config().parsed as any) as EnvParams;

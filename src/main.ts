@@ -1,6 +1,6 @@
 import { NestFactory } from '@nestjs/core';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
-import { env } from '@src/env';
+import { env } from './env';
 
 import { AppModule } from './app.module';
 

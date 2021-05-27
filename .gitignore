@@ -2,8 +2,10 @@
 
 # config
 .env
+.env.prod.env
 
 # compiled output
+/build
 /dist
 
 # dependencies

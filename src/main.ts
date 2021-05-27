@@ -13,7 +13,7 @@ async function bootstrap() {
     .setTitle('Hackathon 27.05.2021')
     .setDescription('Project API')
     .setVersion('1.0')
-    .addTag('users')
+    .addBearerAuth()
     .build();
 
   const swaggerDocument = SwaggerModule.createDocument(app, swaggerConfig);

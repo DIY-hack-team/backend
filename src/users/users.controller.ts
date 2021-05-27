@@ -10,7 +10,12 @@ import {
   HttpStatus,
   UseGuards,
 } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
+import {
+  ApiTags,
+  ApiOperation,
+  ApiResponse,
+  ApiBearerAuth,
+} from '@nestjs/swagger';
 import { Response } from 'express';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './models/create_user.dto';
@@ -24,6 +29,7 @@ export class UsersController {
 
   @UseGuards(JwtAuthGuard)
   @Get()
+  @ApiBearerAuth()
   @ApiOperation({ summary: 'Get users list' })
   @ApiResponse({ status: HttpStatus.NO_CONTENT, description: 'Empty list' })
   @ApiResponse({ status: HttpStatus.OK, description: 'User list returned' })
@@ -37,6 +43,7 @@ export class UsersController {
 
   @UseGuards(JwtAuthGuard)
   @Post()
+  @ApiBearerAuth()
   @ApiOperation({ summary: 'Create new user' })
   @ApiResponse({ status: HttpStatus.CREATED, description: 'User created' })
   async create(@Body() createUserDto: CreateUserDto) {
@@ -45,6 +52,7 @@ export class UsersController {
 
   @UseGuards(JwtAuthGuard)
   @Get(':id')
+  @ApiBearerAuth()
   @ApiOperation({ summary: 'Get user by id' })
   @ApiResponse({ status: HttpStatus.NOT_FOUND, description: 'User not found' })
   @ApiResponse({ status: HttpStatus.OK, description: 'User returned' })
@@ -54,6 +62,7 @@ export class UsersController {
 
   @UseGuards(JwtAuthGuard)
   @Patch(':id')
+  @ApiBearerAuth()
   @ApiOperation({ summary: 'Update user with specific id' })
   @ApiResponse({ status: HttpStatus.NOT_FOUND, description: 'User not found' })
   @ApiResponse({
@@ -67,6 +76,7 @@ export class UsersController {
 
   @UseGuards(JwtAuthGuard)
   @Delete(':id')
+  @ApiBearerAuth()
   @ApiOperation({ summary: 'Delete user with specific id' })
   @ApiResponse({ status: HttpStatus.NOT_FOUND, description: 'User not found' })
   @ApiResponse({ status: HttpStatus.NO_CONTENT, description: 'User deleted' })

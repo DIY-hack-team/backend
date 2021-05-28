@@ -17,11 +17,11 @@ export class ProdTeamsService {
     createProdTeamDto: CreateProdTeamDto,
   ): Promise<{ prodTeam: ProdTeam }> {
     const prodTeam = this.prodTeamsRepo.create({
-      prodTeamId: createProdTeamDto.prodTeamId,
-      prodTeamName: createProdTeamDto.prodTeamName,
-      prodTeamRus: createProdTeamDto.prodTeamRus,
-      prodTeamType: createProdTeamDto.prodTeamType,
-      costCenter: createProdTeamDto.costCenter,
+      product_team_id: createProdTeamDto.prodTeamId,
+      product_team_name: createProdTeamDto.prodTeamName,
+      product_team_rus: createProdTeamDto.prodTeamRus,
+      product_team_type: createProdTeamDto.prodTeamType,
+      cost_center: createProdTeamDto.costCenter,
       status: createProdTeamDto.status,
     });
     const result: ProdTeam = await this.prodTeamsRepo.save(prodTeam);

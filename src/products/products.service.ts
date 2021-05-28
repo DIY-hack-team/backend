@@ -17,9 +17,9 @@ export class ProductsService {
     createProductDto: CreateProductDto,
   ): Promise<{ product: Product }> {
     const product = this.productsRepo.create({
-      productId: createProductDto.productId,
-      productName: createProductDto.productName,
-      productTeamId: createProductDto.productTeamId,
+      product_id: createProductDto.productId,
+      product_name: createProductDto.productName,
+      product_team_id: createProductDto.productTeamId,
       status: createProductDto.status,
     });
     const result: Product = await this.productsRepo.save(product);
@@ -30,13 +30,13 @@ export class ProductsService {
     return await this.productsRepo.find();
   }
 
-  async findOne(productId: string): Promise<Product> {
-    const product = await this.productsRepo.findOne(productId);
+  async findOne(product_id: string): Promise<Product> {
+    const product = await this.productsRepo.findOne(product_id);
     if (product) {
       return product;
     } else {
       throw new NotFoundException(
-        `Entity Product with productId = ${productId} not found`,
+        `Entity Product with product_id = ${product_id} not found`,
       );
     }
   }

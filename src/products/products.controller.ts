@@ -43,16 +43,16 @@ export class ProductsController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Get(':domainId')
+  @Get(':product_id')
   @ApiBearerAuth()
-  @ApiOperation({ summary: 'Get domain by domainId' })
+  @ApiOperation({ summary: 'Get products by product_id' })
   @ApiResponse({
     status: HttpStatus.NOT_FOUND,
-    description: 'Domain not found',
+    description: 'Product not found',
   })
   @ApiResponse({ status: HttpStatus.OK, description: 'Domain returned' })
-  findOne(@Param('domainId') domainId: string) {
-    return this.ProductsService.findOne(domainId);
+  findOne(@Param('product_id') product_id: string) {
+    return this.ProductsService.findOne(product_id);
   }
 
   @UseGuards(JwtAuthGuard)

@@ -19,7 +19,7 @@ export class ProjectsService {
     const project = this.projectRepo.create({
       id: createProjectDto.id,
       name: createProjectDto.name,
-      itSystem: createProjectDto.itSystem,
+      it_system: createProjectDto.itSystem,
       employee: createProjectDto.employee,
       status: createProjectDto.status,
     });

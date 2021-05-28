@@ -2,21 +2,21 @@ import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 @Entity({
   name: 'domains',
   orderBy: {
-    domainId: 'DESC',
+    domain_id: 'DESC',
   },
 })
 export class Domain {
   @PrimaryGeneratedColumn()
-  domainId: string;
+  domain_id: string;
 
   @Column()
-  domainTag: string;
+  domain_tag: string;
 
   @Column()
-  domainName: string;
+  domain_name: string;
 
   @Column()
-  domainNameRus: string;
+  domain_name_rus: string;
 
   @Column()
   status: string;

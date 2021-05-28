@@ -17,11 +17,11 @@ export class EmployeesService {
     createEmployeeDto: CreateEmployeeDto,
   ): Promise<{ ldap: number }> {
     const employee = this.employeesRepo.create({
-      userName: createEmployeeDto.userName,
-      legalEntity: createEmployeeDto.legalEntity,
+      name: createEmployeeDto.userName,
+      legal_entity: createEmployeeDto.legalEntity,
       organisation: createEmployeeDto.organisation,
-      businessRole: createEmployeeDto.businessRole,
-      costCenter: createEmployeeDto.costCenter,
+      business_role: createEmployeeDto.businessRole,
+      cost_center: createEmployeeDto.costCenter,
       ldap: createEmployeeDto.ldap,
     });
     const result: Employee = await this.employeesRepo.save(employee);

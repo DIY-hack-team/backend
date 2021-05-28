@@ -2,7 +2,7 @@ import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 @Entity({
   name: 'projects',
   orderBy: {
-    domainId: 'DESC',
+    id: 'DESC',
   },
 })
 export class Project {
@@ -13,7 +13,7 @@ export class Project {
   name: string;
 
   @Column()
-  itSystem: string;
+  it_system: string;
 
   @Column()
   employee: string;

@@ -2,18 +2,18 @@ import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 @Entity({
   name: 'products',
   orderBy: {
-    productId: 'DESC',
+    product_id: 'DESC',
   },
 })
 export class Product {
   @PrimaryGeneratedColumn()
-  productId: string;
+  product_id: string;
 
   @Column()
-  productName: string;
+  product_name: string;
 
   @Column()
-  productTeamId: string;
+  product_team_id: string;
 
   @Column()
   status: string;

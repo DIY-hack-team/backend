@@ -15,10 +15,10 @@ export class DomainsService {
 
   async create(createDomainDto: CreateDomainDto): Promise<{ domain: Domain }> {
     const domain = this.domainsRepo.create({
-      domainId: createDomainDto.domainId,
-      domainTag: createDomainDto.domainTag,
-      domainName: createDomainDto.domainName,
-      domainNameRus: createDomainDto.domainNameRus,
+      domain_id: createDomainDto.domainId,
+      domain_tag: createDomainDto.domainTag,
+      domain_name: createDomainDto.domainName,
+      domain_name_rus: createDomainDto.domainNameRus,
       status: createDomainDto.status,
     });
     const result: Domain = await this.domainsRepo.save(domain);

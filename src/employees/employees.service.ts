@@ -3,19 +3,11 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Connection, Repository } from 'typeorm';
 
 import { CreateEmployeeDto } from './models/createEmployee.dto';
-import { EmployeeFilterFieldsDto } from './models/employee.filter.dto';
+import { EmployeeFindAllDto } from './models/employees-find-all.dto';
 import { Employee } from './models/employees.entity';
 
 @Injectable()
 export class EmployeesService {
-  getByFilter(
-    limit: number,
-    offset: number,
-    filters: EmployeeFilterFieldsDto,
-  ): Promise<Employee[]> {
-    // do search by filter there
-    return;
-  }
   constructor(
     private connection: Connection,
     @InjectRepository(Employee)
@@ -37,8 +29,46 @@ export class EmployeesService {
     return { ldap: result.ldap };
   }
 
-  async findAll(): Promise<Employee[]> {
-    return await this.employeesRepo.find();
+  async findAll(params: EmployeeFindAllDto): Promise<Employee[]> {
+    const whereStack = [];
+    if (params.search) {
+      let stmt: string;
+      let search: string | number;
+      if (
+        !isNaN(Number(params.search)) &&
+        params.search.slice(0, 2) == '60' &&
+        params.search.length === 8
+      ) {
+        stmt = 'ldap = :search';
+        search = Number(params.search);
+      } else {
+        stmt = 'name ilike :search';
+        search = `%${params.search}%`;
+      }
+      whereStack.push({
+        stmt: stmt,
+        params: {
+          search: search,
+        },
+      });
+    }
+
+    if (params.domain) {
+      // TODO: search domain
+    }
+
+    const queryBuilder = this.employeesRepo.createQueryBuilder();
+    if (whereStack.length > 0) {
+      queryBuilder.where(whereStack[0].stmt, whereStack[0].params);
+    }
+
+    if (whereStack.length > 1) {
+      whereStack.slice(1).forEach((item) => {
+        queryBuilder.andWhere(item.stmt, item.params);
+      });
+    }
+
+    return queryBuilder.getMany();
   }
 
   async findOne(ldap: number): Promise<Employee> {

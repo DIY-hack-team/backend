@@ -6,7 +6,10 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   VersionColumn,
+  ManyToMany,
 } from 'typeorm';
+import { Employee } from '../../employees/models/employees.entity';
+
 @Entity({
   name: 'domains',
   orderBy: {
@@ -38,4 +41,7 @@ export class Domain {
 
   @VersionColumn()
   version: number;
+
+  @ManyToMany(() => Employee, (employee) => employee.domains)
+  employees: Array<Employee>;
 }

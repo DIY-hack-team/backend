@@ -4,18 +4,10 @@ import { Connection, Repository } from 'typeorm';
 import { CreateDomainDto } from './models/createDomain.dto';
 
 import { Domain } from './models/domain.entity';
-import { DomainFilterFieldsDto } from './models/domain.filter.dto';
+import { DomainsFindAllDto } from './models/domains-find-all.dto';
 
 @Injectable()
 export class DomainsService {
-  getByFilter(
-    limit: number,
-    offset: number,
-    filters: DomainFilterFieldsDto,
-  ): Promise<Domain[]> {
-    // do search by filter there
-    return;
-  }
   constructor(
     private connection: Connection,
     @InjectRepository(Domain)
@@ -34,8 +26,14 @@ export class DomainsService {
     return { domain: result };
   }
 
-  async findAll(): Promise<Domain[]> {
-    return await this.domainsRepo.find();
+  async findAll(params: DomainsFindAllDto): Promise<Domain[]> {
+    const queryBuilder = this.domainsRepo.createQueryBuilder();
+    if (params.search) {
+      queryBuilder.where('domain_name_rus ilike :name', {
+        name: `%${params.search}%`,
+      });
+    }
+    return await queryBuilder.getMany();
   }
 
   async findOne(domainId: string): Promise<Domain> {

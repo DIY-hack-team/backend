@@ -1,3 +1,4 @@
+import { Domain } from '../../domains/models/domain.entity';
 import {
   Entity,
   Column,
@@ -6,7 +7,9 @@ import {
   Index,
   UpdateDateColumn,
   VersionColumn,
+  ManyToMany,
 } from 'typeorm';
+
 @Entity({
   name: 'employees',
   orderBy: {
@@ -41,4 +44,7 @@ export class Employee {
 
   @VersionColumn()
   version: number;
+
+  @ManyToMany(() => Domain, (domain) => domain.employees)
+  domains: Array<Domain>;
 }

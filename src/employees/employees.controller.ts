@@ -4,7 +4,6 @@ import {
   Post,
   Body,
   Param,
-  Delete,
   Res,
   HttpStatus,
   UseGuards,
@@ -19,7 +18,7 @@ import { Response } from 'express';
 import { EmployeesService } from './employees.service';
 import { CreateEmployeeDto } from './models/createEmployee.dto';
 import { JwtAuthGuard } from '../auth/jwt.auth.guard';
-
+import { EmployeeFilterDto } from './models/employee.filter.dto';
 @ApiTags('employees')
 @Controller('employees')
 export class EmployeeController {
@@ -59,5 +58,14 @@ export class EmployeeController {
   @ApiResponse({ status: HttpStatus.OK, description: 'Employee returned' })
   findOne(@Param('ldap') ldap: number) {
     return this.employeeService.findOne(+ldap);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get(':filter')
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Get employees by filter' })
+  async getByFilter(@Body() body: EmployeeFilterDto) {
+    const { limit, offset, filters } = body;
+    return this.employeeService.getByFilter(limit, offset, filters);
   }
 }

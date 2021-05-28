@@ -19,7 +19,7 @@ import { Response } from 'express';
 import { ProductsService } from './products.service';
 import { CreateProductDto } from './models/createProduct.dto';
 import { JwtAuthGuard } from '../auth/jwt.auth.guard';
-
+import { ProductFilterDto } from './models/product.filter.dto';
 @ApiTags('products')
 @Controller('products')
 export class ProductsController {
@@ -65,5 +65,14 @@ export class ProductsController {
   })
   async create(@Body() createProductDto: CreateProductDto) {
     return await this.ProductsService.create(createProductDto);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get(':filter')
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Get products by filter' })
+  async getByFilter(@Body() body: ProductFilterDto) {
+    const { limit, offset, filters } = body;
+    return this.ProductsService.getByFilter(limit, offset, filters);
   }
 }

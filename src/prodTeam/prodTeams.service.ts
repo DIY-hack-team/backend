@@ -4,9 +4,18 @@ import { Connection, Repository } from 'typeorm';
 import { CreateProdTeamDto } from './models/createProdTeam.dto';
 
 import { ProdTeam } from './models/prodTeam.entity';
+import { ProductTeamFilterFieldsDto } from './models/prodTeam.filters.dto';
 
 @Injectable()
 export class ProdTeamsService {
+  getByFilter(
+    limit: number,
+    offset: number,
+    filters: ProductTeamFilterFieldsDto,
+  ): Promise<ProdTeam[]> {
+    // do search by filter
+    return;
+  }
   constructor(
     private connection: Connection,
     @InjectRepository(ProdTeam)

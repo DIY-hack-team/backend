@@ -4,9 +4,18 @@ import { Connection, Repository } from 'typeorm';
 import { CreateCostcenterDto } from './models/createCostcenter.dto';
 
 import { Costcenter } from './models/costcenter.entity';
+import { CostcenterFilterFieldsDto } from './models/costcenter.filter.dto';
 
 @Injectable()
 export class CostcentersService {
+  getByFilter(
+    limit: number,
+    offset: number,
+    filters: CostcenterFilterFieldsDto,
+  ): Promise<Costcenter[]> {
+    // DO search by filter there
+    return;
+  }
   constructor(
     private connection: Connection,
     @InjectRepository(Costcenter)

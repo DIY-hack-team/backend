@@ -18,6 +18,7 @@ import { Response } from 'express';
 import { CostcentersService } from './costcenters.service';
 import { CreateCostcenterDto } from './models/createCostcenter.dto';
 import { JwtAuthGuard } from '../auth/jwt.auth.guard';
+import { CostcenterFilterDto } from './models/costcenter.filter.dto';
 
 @ApiTags('costcenters')
 @Controller('costcenters')
@@ -64,5 +65,14 @@ export class CostcentersController {
   })
   async create(@Body() createCostcenterDto: CreateCostcenterDto) {
     return await this.CostcentersService.create(createCostcenterDto);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get(':filter')
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Get domains by filter' })
+  async getByFilter(@Body() body: CostcenterFilterDto) {
+    const { limit, offset, filters } = body;
+    return this.CostcentersService.getByFilter(limit, offset, filters);
   }
 }

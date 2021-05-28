@@ -4,9 +4,18 @@ import { Connection, Repository } from 'typeorm';
 import { CreateDomainDto } from './models/createDomain.dto';
 
 import { Domain } from './models/domain.entity';
+import { DomainFilterFieldsDto } from './models/domain.filter.dto';
 
 @Injectable()
 export class DomainsService {
+  getByFilter(
+    limit: number,
+    offset: number,
+    filters: DomainFilterFieldsDto,
+  ): Promise<Domain[]> {
+    // do search by filter there
+    return;
+  }
   constructor(
     private connection: Connection,
     @InjectRepository(Domain)

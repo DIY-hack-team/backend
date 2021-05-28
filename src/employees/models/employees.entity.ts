@@ -1,12 +1,20 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryColumn,
+  CreateDateColumn,
+  Index,
+  UpdateDateColumn,
+  VersionColumn,
+} from 'typeorm';
 @Entity({
   name: 'employees',
   orderBy: {
-    ldap: 'DESC',
+    created: 'DESC',
   },
 })
 export class Employee {
-  @PrimaryGeneratedColumn()
+  @PrimaryColumn()
   ldap: number;
 
   @Column()
@@ -23,4 +31,14 @@ export class Employee {
 
   @Column()
   cost_center: string;
+
+  @Index()
+  @CreateDateColumn()
+  created: Date;
+
+  @UpdateDateColumn()
+  updated: Date;
+
+  @VersionColumn()
+  version: number;
 }

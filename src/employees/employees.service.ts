@@ -3,10 +3,19 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Connection, Repository } from 'typeorm';
 
 import { CreateEmployeeDto } from './models/createEmployee.dto';
+import { EmployeeFilterFieldsDto } from './models/employee.filter.dto';
 import { Employee } from './models/employees.entity';
 
 @Injectable()
 export class EmployeesService {
+  getByFilter(
+    limit: number,
+    offset: number,
+    filters: EmployeeFilterFieldsDto,
+  ): Promise<Employee[]> {
+    // do search by filter there
+    return;
+  }
   constructor(
     private connection: Connection,
     @InjectRepository(Employee)

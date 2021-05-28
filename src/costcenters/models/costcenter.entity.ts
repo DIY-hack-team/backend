@@ -1,12 +1,20 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryColumn,
+  Index,
+  CreateDateColumn,
+  UpdateDateColumn,
+  VersionColumn,
+} from 'typeorm';
 @Entity({
   name: 'costcenters',
   orderBy: {
-    code: 'DESC',
+    сreated: 'DESC',
   },
 })
 export class Costcenter {
-  @PrimaryGeneratedColumn()
+  @PrimaryColumn()
   code: string;
 
   @Column()
@@ -14,4 +22,14 @@ export class Costcenter {
 
   @Column()
   domain: string;
+
+  @Index()
+  @CreateDateColumn()
+  created: Date;
+
+  @UpdateDateColumn()
+  updated: Date;
+
+  @VersionColumn()
+  version: number;
 }

@@ -1,12 +1,20 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryColumn,
+  CreateDateColumn,
+  Index,
+  UpdateDateColumn,
+  VersionColumn,
+} from 'typeorm';
 @Entity({
   name: 'prodteams',
   orderBy: {
-    product_team_id: 'DESC',
+    created: 'DESC',
   },
 })
 export class ProdTeam {
-  @PrimaryGeneratedColumn()
+  @PrimaryColumn()
   product_team_id: string;
 
   @Column()
@@ -26,4 +34,14 @@ export class ProdTeam {
 
   @Column()
   domain_id: string;
+
+  @Index()
+  @CreateDateColumn()
+  created: Date;
+
+  @UpdateDateColumn()
+  updated: Date;
+
+  @VersionColumn()
+  version: number;
 }

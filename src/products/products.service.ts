@@ -4,9 +4,18 @@ import { Connection, Repository } from 'typeorm';
 import { CreateProductDto } from './models/createProduct.dto';
 
 import { Product } from './models/product.entity';
+import { ProductFilterFieldsDto } from './models/product.filter.dto';
 
 @Injectable()
 export class ProductsService {
+  getByFilter(
+    limit: number,
+    offset: number,
+    filters: ProductFilterFieldsDto,
+  ): Promise<Product[]> {
+    //do search by filters
+    return;
+  }
   constructor(
     private connection: Connection,
     @InjectRepository(Product)

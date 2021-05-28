@@ -18,7 +18,7 @@ import { Response } from 'express';
 import { ProjectsService } from './projects.service';
 import { CreateProjectDto } from './models/create.project.dto';
 import { JwtAuthGuard } from '../auth/jwt.auth.guard';
-
+import { ProjectFilterDto } from './models/project.filter.dto';
 @ApiTags('projects')
 @Controller('projects')
 export class ProjectsController {
@@ -64,5 +64,14 @@ export class ProjectsController {
   })
   async create(@Body() createProjectDto: CreateProjectDto) {
     return await this.ProjectsService.create(createProjectDto);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get(':filter')
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Get projects by filter' })
+  async getByFilter(@Body() body: ProjectFilterDto) {
+    const { limit, offset, filters } = body;
+    return this.ProjectsService.getByFilter(limit, offset, filters);
   }
 }

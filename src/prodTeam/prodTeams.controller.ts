@@ -18,6 +18,7 @@ import { Response } from 'express';
 import { ProdTeamsService } from './prodTeams.service';
 import { CreateProdTeamDto } from './models/createProdTeam.dto';
 import { JwtAuthGuard } from '../auth/jwt.auth.guard';
+import { ProductTeamFilterDto } from './models/prodTeam.filters.dto';
 
 @ApiTags('prodteams')
 @Controller('prodteams')
@@ -64,5 +65,14 @@ export class ProdTeamsController {
   })
   async create(@Body() createProdTeamDto: CreateProdTeamDto) {
     return await this.ProdTeamsService.create(createProdTeamDto);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get(':filter')
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Get products by filter' })
+  async getByFilter(@Body() body: ProductTeamFilterDto) {
+    const { limit, offset, filters } = body;
+    return this.ProdTeamsService.getByFilter(limit, offset, filters);
   }
 }

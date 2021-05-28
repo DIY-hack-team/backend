@@ -19,6 +19,7 @@ import { Response } from 'express';
 import { DomainsService } from './domains.service';
 import { CreateDomainDto } from './models/createDomain.dto';
 import { JwtAuthGuard } from '../auth/jwt.auth.guard';
+import { DomainFilterDto } from './models/domain.filter.dto';
 
 @ApiTags('domains')
 @Controller('domains')
@@ -65,5 +66,14 @@ export class DomainsController {
   })
   async create(@Body() createDomainDto: CreateDomainDto) {
     return await this.DomainsService.create(createDomainDto);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get(':filter')
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Get domains by filter' })
+  async getByFilter(@Body() body: DomainFilterDto) {
+    const { limit, offset, filters } = body;
+    return this.DomainsService.getByFilter(limit, offset, filters);
   }
 }

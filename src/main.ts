@@ -9,6 +9,10 @@ async function bootstrap() {
     logger: ['log', 'error', 'warn', 'debug', 'verbose'],
   });
 
+  if (env.SERVER_CORS) {
+    app.enableCors();
+  }
+
   const swaggerConfig = new DocumentBuilder()
     .setTitle('Hackathon 27.05.2021')
     .setDescription('Project API')

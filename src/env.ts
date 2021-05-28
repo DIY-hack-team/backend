@@ -9,6 +9,7 @@ class EnvParams {
   TYPEORM_SYNCHRONIZE: boolean;
   TYPEORM_LOGGING: boolean;
   SERVER_PORT: number;
+  SERVER_CORS: boolean;
   JWT_SECRET: string;
   JWT_EXPIRES_IN: string;
   ADMIN_NAME: string;

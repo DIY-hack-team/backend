@@ -2,9 +2,19 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { env } from './env';
 
-import { UsersModule } from './users/users.module';
-import { User } from './users/models/user.entity';
+import { EmployeesModule } from './employees/employees.module';
+import { ProdTeamModule } from './prodTeam/prodTeams.module';
+import { Employee } from './employees/models/employees.entity';
+import { ProdTeam } from './prodTeam/models/prodTeam.entity';
 import { AuthModule } from './auth/auth.module';
+import { DomainsModule } from './domains/domains.module';
+import { Domain } from './domains/models/domain.entity';
+import { ProductsModule } from './products/products.module';
+import { Product } from './products/models/product.entity';
+import { CostcentersModule } from './costcenters/costcenters.module';
+import { Costcenter } from './costcenters/models/costcenter.entity';
+import { ProjectsModule } from './projects/projects.module';
+import { Project } from './projects/models/project.entity';
 
 @Module({
   imports: [
@@ -16,11 +26,16 @@ import { AuthModule } from './auth/auth.module';
       password: env.PG_PASSWORD || null,
       database: env.PG_DATABASE,
       synchronize: env.TYPEORM_SYNCHRONIZE,
-      entities: [User],
+      entities: [Employee, ProdTeam, Domain, Product, Costcenter, Project],
       logging: env.TYPEORM_LOGGING,
     }),
     AuthModule,
-    UsersModule,
+    EmployeesModule,
+    ProdTeamModule,
+    DomainsModule,
+    ProductsModule,
+    CostcentersModule,
+    ProjectsModule,
   ],
   controllers: [],
   providers: [],

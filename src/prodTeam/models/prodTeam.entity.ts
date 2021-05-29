@@ -10,7 +10,7 @@ import {
 @Entity({
   name: 'prodteams',
   orderBy: {
-    created: 'DESC',
+    product_team_rus: 'ASC',
   },
 })
 export class ProdTeam {
@@ -20,6 +20,7 @@ export class ProdTeam {
   @Column()
   product_team_name: string;
 
+  @Index()
   @Column()
   product_team_rus: string;
 

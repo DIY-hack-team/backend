@@ -10,13 +10,14 @@ import {
 @Entity({
   name: 'products',
   orderBy: {
-    created: 'DESC',
+    product_name: 'ASC',
   },
 })
 export class Product {
   @PrimaryColumn()
   product_id: string;
 
+  @Index()
   @Column()
   product_name: string;
 

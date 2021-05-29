@@ -13,7 +13,7 @@ import { Employee } from '../../employees/models/employees.entity';
 @Entity({
   name: 'domains',
   orderBy: {
-    created: 'DESC',
+    domain_name_rus: 'ASC',
   },
 })
 export class Domain {
@@ -26,6 +26,7 @@ export class Domain {
   @Column()
   domain_name: string;
 
+  @Index()
   @Column()
   domain_name_rus: string;
 

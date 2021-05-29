@@ -13,13 +13,14 @@ import {
 @Entity({
   name: 'employees',
   orderBy: {
-    created: 'DESC',
+    name: 'ASC',
   },
 })
 export class Employee {
   @PrimaryColumn()
   ldap: number;
 
+  @Index()
   @Column()
   name: string;
 

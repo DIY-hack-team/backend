@@ -19,7 +19,9 @@ import { Response } from 'express';
 import { ProductsService } from './products.service';
 import { CreateProductDto } from './models/createProduct.dto';
 import { JwtAuthGuard } from '../auth/jwt.auth.guard';
-import { ProductFilterDto } from './models/product.filter.dto';
+import { ProductsFindAllDto } from './models/products-find-all.dto';
+import { Query } from '@nestjs/common';
+
 @ApiTags('products')
 @Controller('products')
 export class ProductsController {
@@ -34,8 +36,11 @@ export class ProductsController {
     status: HttpStatus.OK,
     description: 'Products list returned',
   })
-  async findAll(@Res({ passthrough: true }) res: Response) {
-    const products = await this.ProductsService.findAll();
+  async findAll(
+    @Res({ passthrough: true }) res: Response,
+    @Query() params: ProductsFindAllDto,
+  ) {
+    const products = await this.ProductsService.findAll(params);
     if (products.length == 0) {
       res.status(HttpStatus.NO_CONTENT);
     }
@@ -65,14 +70,5 @@ export class ProductsController {
   })
   async create(@Body() createProductDto: CreateProductDto) {
     return await this.ProductsService.create(createProductDto);
-  }
-
-  @UseGuards(JwtAuthGuard)
-  @Get(':filter')
-  @ApiBearerAuth()
-  @ApiOperation({ summary: 'Get products by filter' })
-  async getByFilter(@Body() body: ProductFilterDto) {
-    const { limit, offset, filters } = body;
-    return this.ProductsService.getByFilter(limit, offset, filters);
   }
 }

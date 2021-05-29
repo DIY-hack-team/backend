@@ -11,8 +11,6 @@ import { DomainsModule } from './domains/domains.module';
 import { Domain } from './domains/models/domain.entity';
 import { ProductsModule } from './products/products.module';
 import { Product } from './products/models/product.entity';
-import { CostcentersModule } from './costcenters/costcenters.module';
-import { Costcenter } from './costcenters/models/costcenter.entity';
 import { ProjectsModule } from './projects/projects.module';
 import { Project } from './projects/models/project.entity';
 
@@ -26,7 +24,7 @@ import { Project } from './projects/models/project.entity';
       password: env.PG_PASSWORD || null,
       database: env.PG_DATABASE,
       synchronize: env.TYPEORM_SYNCHRONIZE,
-      entities: [Employee, ProdTeam, Domain, Product, Costcenter, Project],
+      entities: [Employee, ProdTeam, Domain, Product, Project],
       logging: env.TYPEORM_LOGGING,
     }),
     AuthModule,
@@ -34,7 +32,6 @@ import { Project } from './projects/models/project.entity';
     ProdTeamModule,
     DomainsModule,
     ProductsModule,
-    CostcentersModule,
     ProjectsModule,
   ],
   controllers: [],

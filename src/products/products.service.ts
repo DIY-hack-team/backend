@@ -4,18 +4,10 @@ import { Connection, Repository } from 'typeorm';
 import { CreateProductDto } from './models/createProduct.dto';
 
 import { Product } from './models/product.entity';
-import { ProductFilterFieldsDto } from './models/product.filter.dto';
+import { ProductsFindAllDto } from './models/products-find-all.dto';
 
 @Injectable()
 export class ProductsService {
-  getByFilter(
-    limit: number,
-    offset: number,
-    filters: ProductFilterFieldsDto,
-  ): Promise<Product[]> {
-    //do search by filters
-    return;
-  }
   constructor(
     private connection: Connection,
     @InjectRepository(Product)
@@ -35,8 +27,34 @@ export class ProductsService {
     return { product: result };
   }
 
-  async findAll(): Promise<Product[]> {
-    return await this.productsRepo.find();
+  async findAll(params: ProductsFindAllDto): Promise<Product[]> {
+    const whereStack = [];
+    if (params.search) {
+      whereStack.push({
+        stmt: 'product_id = :eqSearch or product_name ilike :likeSearch',
+        params: {
+          eqSearch: params.search,
+          likeSearch: `%${params.search}%`,
+        },
+      });
+    }
+
+    if (params.domain) {
+      // TODO: search domain
+    }
+
+    const queryBuilder = this.productsRepo.createQueryBuilder();
+    if (whereStack.length > 0) {
+      queryBuilder.where(whereStack[0].stmt, whereStack[0].params);
+    }
+
+    if (whereStack.length > 1) {
+      whereStack.slice(1).forEach((item) => {
+        queryBuilder.andWhere(item.stmt, item.params);
+      });
+    }
+
+    return queryBuilder.getMany();
   }
 
   async findOne(product_id: string): Promise<Product> {

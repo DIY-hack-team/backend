@@ -4,18 +4,10 @@ import { Connection, Repository } from 'typeorm';
 import { CreateProdTeamDto } from './models/createProdTeam.dto';
 
 import { ProdTeam } from './models/prodTeam.entity';
-import { ProductTeamFilterFieldsDto } from './models/prodTeam.filters.dto';
+import { TeamsFindAllDto } from './models/teams-find-all.dto';
 
 @Injectable()
 export class ProdTeamsService {
-  getByFilter(
-    limit: number,
-    offset: number,
-    filters: ProductTeamFilterFieldsDto,
-  ): Promise<ProdTeam[]> {
-    // do search by filter
-    return;
-  }
   constructor(
     private connection: Connection,
     @InjectRepository(ProdTeam)
@@ -37,8 +29,35 @@ export class ProdTeamsService {
     return { prodTeam: result };
   }
 
-  async findAll(): Promise<ProdTeam[]> {
-    return await this.prodTeamsRepo.find();
+  async findAll(params: TeamsFindAllDto): Promise<ProdTeam[]> {
+    const whereStack = [];
+    if (params.search) {
+      whereStack.push({
+        stmt:
+          'product_team_id = :eqSearch or product_team_rus ilike :likeSearch',
+        params: {
+          eqSearch: params.search,
+          likeSearch: `%${params.search}%`,
+        },
+      });
+    }
+
+    if (params.domain) {
+      // TODO: search domain
+    }
+
+    const queryBuilder = this.prodTeamsRepo.createQueryBuilder();
+    if (whereStack.length > 0) {
+      queryBuilder.where(whereStack[0].stmt, whereStack[0].params);
+    }
+
+    if (whereStack.length > 1) {
+      whereStack.slice(1).forEach((item) => {
+        queryBuilder.andWhere(item.stmt, item.params);
+      });
+    }
+
+    return queryBuilder.getMany();
   }
 
   async findOne(prodTeamId: string): Promise<ProdTeam> {

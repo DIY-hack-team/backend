@@ -7,6 +7,7 @@ import {
   Res,
   HttpStatus,
   UseGuards,
+  Query,
 } from '@nestjs/common';
 import {
   ApiTags,
@@ -17,11 +18,11 @@ import {
 import { Response } from 'express';
 import { ProdTeamsService } from './prodTeams.service';
 import { CreateProdTeamDto } from './models/createProdTeam.dto';
+import { TeamsFindAllDto } from './models/teams-find-all.dto';
 import { JwtAuthGuard } from '../auth/jwt.auth.guard';
-import { ProductTeamFilterDto } from './models/prodTeam.filters.dto';
 
-@ApiTags('prodteams')
-@Controller('prodteams')
+@ApiTags('teams')
+@Controller('teams')
 export class ProdTeamsController {
   constructor(private readonly ProdTeamsService: ProdTeamsService) {}
 
@@ -34,8 +35,11 @@ export class ProdTeamsController {
     status: HttpStatus.OK,
     description: 'Product teams list returned',
   })
-  async findAll(@Res({ passthrough: true }) res: Response) {
-    const prodTeams = await this.ProdTeamsService.findAll();
+  async findAll(
+    @Res({ passthrough: true }) res: Response,
+    @Query() params: TeamsFindAllDto,
+  ) {
+    const prodTeams = await this.ProdTeamsService.findAll(params);
     if (prodTeams.length == 0) {
       res.status(HttpStatus.NO_CONTENT);
     }
@@ -43,16 +47,16 @@ export class ProdTeamsController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Get(':prodTeamId')
+  @Get(':id')
   @ApiBearerAuth()
-  @ApiOperation({ summary: 'Get product team by prodTeamId' })
+  @ApiOperation({ summary: 'Get product team by id' })
   @ApiResponse({
     status: HttpStatus.NOT_FOUND,
     description: 'Product team not found',
   })
   @ApiResponse({ status: HttpStatus.OK, description: 'Product team returned' })
-  findOne(@Param('prodTeamId') prodTeamId: string) {
-    return this.ProdTeamsService.findOne(prodTeamId);
+  findOne(@Param('id') id: string) {
+    return this.ProdTeamsService.findOne(id);
   }
 
   @UseGuards(JwtAuthGuard)
@@ -65,14 +69,5 @@ export class ProdTeamsController {
   })
   async create(@Body() createProdTeamDto: CreateProdTeamDto) {
     return await this.ProdTeamsService.create(createProdTeamDto);
-  }
-
-  @UseGuards(JwtAuthGuard)
-  @Get(':filter')
-  @ApiBearerAuth()
-  @ApiOperation({ summary: 'Get products by filter' })
-  async getByFilter(@Body() body: ProductTeamFilterDto) {
-    const { limit, offset, filters } = body;
-    return this.ProdTeamsService.getByFilter(limit, offset, filters);
   }
 }

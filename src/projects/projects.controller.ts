@@ -7,6 +7,7 @@ import {
   Res,
   HttpStatus,
   UseGuards,
+  Query,
 } from '@nestjs/common';
 import {
   ApiTags,
@@ -18,7 +19,8 @@ import { Response } from 'express';
 import { ProjectsService } from './projects.service';
 import { CreateProjectDto } from './models/create.project.dto';
 import { JwtAuthGuard } from '../auth/jwt.auth.guard';
-import { ProjectFilterDto } from './models/project.filter.dto';
+import { ProjectFindAllDto } from './models/project-find-all.dto';
+
 @ApiTags('projects')
 @Controller('projects')
 export class ProjectsController {
@@ -33,8 +35,11 @@ export class ProjectsController {
     status: HttpStatus.OK,
     description: 'Projects list returned',
   })
-  async findAll(@Res({ passthrough: true }) res: Response) {
-    const projects = await this.ProjectsService.findAll();
+  async findAll(
+    @Res({ passthrough: true }) res: Response,
+    @Query() params: ProjectFindAllDto,
+  ) {
+    const projects = await this.ProjectsService.findAll(params);
     if (projects.length == 0) {
       res.status(HttpStatus.NO_CONTENT);
     }
@@ -64,14 +69,5 @@ export class ProjectsController {
   })
   async create(@Body() createProjectDto: CreateProjectDto) {
     return await this.ProjectsService.create(createProjectDto);
-  }
-
-  @UseGuards(JwtAuthGuard)
-  @Get(':filter')
-  @ApiBearerAuth()
-  @ApiOperation({ summary: 'Get projects by filter' })
-  async getByFilter(@Body() body: ProjectFilterDto) {
-    const { limit, offset, filters } = body;
-    return this.ProjectsService.getByFilter(limit, offset, filters);
   }
 }
